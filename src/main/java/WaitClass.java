@@ -28,7 +28,7 @@ public class WaitClass {
     public void waitForAjaxToFinish() {
         Boolean isJqueryUsed = (Boolean) ((JavascriptExecutor) driver)
                 .executeScript("return (typeof(jQuery) != 'undefined')");
-        System.out.println(isJqueryUsed);
+        //System.out.println(isJqueryUsed);
         if(isJqueryUsed){
             wait = new WebDriverWait(this.driver, 3);
             wait.until((ExpectedCondition<Boolean>) driver ->
