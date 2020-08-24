@@ -1,6 +1,8 @@
 import lombok.Getter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 @Getter
 public class MailPage extends WaitClass{
@@ -8,7 +10,79 @@ public class MailPage extends WaitClass{
     public MailPage(WebDriver driver) {
         this.driver = driver;
     }
+    @FindBy(xpath = "//a[contains(@class, 'mail-ComposeButton')]")
+    WebElement writeEmailButton;
 
+    @FindBy(xpath = "//span[text()='Кому']/parent::label/parent::div//div[@class='composeYabbles']")
+    WebElement addresseeInput;
+
+    @FindBy(xpath = "//input[@name='subject']")
+    WebElement topicInput;
+
+    @FindBy(xpath = "//div[@role='textbox']")
+    WebElement messageInput;
+
+    @FindBy(xpath = "//div[@class='ComposeSendButton-Text']/../..")
+    WebElement sendEmailButton;
+
+    @FindBy(xpath = "//a[@data-lego and @href='#inbox']")
+    WebElement popupButton;
+
+    @FindBy(xpath = "//span[@data-click-action]")
+    WebElement checkNewEmailButton;
+
+    @FindBy(xpath = "//input[@class='textinput__control']")
+    WebElement searchInput;
+
+    @FindBy(xpath = "//form/button")
+    WebElement findButton;
+
+    @FindBy(xpath = "//span[@title='topic' and text()='topic']")
+    WebElement topicSpan;
+
+    @FindBy(xpath = "//a[contains(@href,'message')]")
+    WebElement listOfEmails;
+
+    @FindBy(xpath = "//div[text()='sometext']")
+    WebElement textOfEmail;
+
+    @FindBy(xpath = "//a[@href='#inbox']")
+    WebElement incomeMailsPageButton;
+
+    public void clickWriteNewEmailButtonAndWait(){
+        writeEmailButton.click();
+        this.waitForAjaxToFinish();
+    }
+    public void prepareNewEmail(String addressee, String topic, String message){
+        addresseeInput.sendKeys(addressee);
+        topicInput.sendKeys(topic);
+        messageInput.sendKeys(message);
+    }
+    public void clickSendNewEmailAndWait(){
+        sendEmailButton.click();
+        this.waitForAjaxToFinish();
+    }
+    public void clickCheckNewEmailsButtonAndWait(){
+        checkNewEmailButton.click();
+        this.waitForAjaxToFinish();
+    }
+
+    public void searchOurMessageAndWait(String topicOfMessage){
+        searchInput.click();
+        this.waitForAjaxToFinish();
+        searchInput.sendKeys(topicOfMessage);
+    }
+    public void clickFindButtonAndWait(){
+        findButton.click();
+        this.waitForAjaxToFinish();
+    }
+    public void goToSentMailAndWait(){
+        incomeMailsPageButton.click();
+        this.waitForAjaxToFinish();
+    }
+
+/*
+    noPageFactory
     private By writeEmailButton = By.xpath("//a[contains(@class, 'mail-ComposeButton')]");
     private By addresseeInput = By.xpath("//span[text()='Кому']/parent::label/parent::div//div[@class='composeYabbles']");
     private By topicInput = By.xpath("//input[@name='subject']");
@@ -40,4 +114,5 @@ public class MailPage extends WaitClass{
     public boolean checkMailsOnTopic() {
         return this.driver.findElement(topicSpan).isDisplayed();
     }
+    */
 }

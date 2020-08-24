@@ -1,6 +1,8 @@
+import com.gargoylesoftware.htmlunit.Page;
 import org.junit.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +44,47 @@ public class MainPageTest {
     }
 
     @Test
+    public void testPageFactory(){
+        firstPage = PageFactory.initElements(driver, FirstPage.class);
+        firstPage.waitAndClick();
+
+        loginPage = PageFactory.initElements(driver, LoginPage.class);
+        loginPage.waitAndTypeLogin("locatortest@yandex.by");
+        loginPage.clickSubmitAndWait();
+        loginPage.waitAndTypePassword("testlocator");
+        loginPage.clickSubmitAndWait();
+
+        mailPage = PageFactory.initElements(driver, MailPage.class);
+        mailPage.clickWriteNewEmailButtonAndWait();
+        mailPage.prepareNewEmail("locatortest@yandex.by", "topic", "sometext");
+        mailPage.clickSendNewEmailAndWait();
+        mailPage.popupButton.click();
+        mailPage.clickCheckNewEmailsButtonAndWait();
+        mailPage.searchOurMessageAndWait("topic");
+        mailPage.clickFindButtonAndWait();
+        Assert.assertTrue(mailPage.topicSpan.isDisplayed());
+        //из списка получаем наше письмо чтобы сравнить текст сообщения
+        mailPage.listOfEmails.click();
+        Assert.assertEquals("sometext", mailPage.textOfEmail.getText());
+        //идем во воходящие
+        mailPage.goToSentMailAndWait();
+
+        inboxPage = PageFactory.initElements(driver, InboxPage.class);
+        inboxPage.checkBoxIncomePageButton.click();
+        inboxPage.deleteEmailIncomePageButton.click();
+        inboxPage.goToSentPage();
+
+        sentPage = PageFactory.initElements(driver, SentPage.class);
+        sentPage.checkBoxSentPageButton.click();
+        sentPage.deleteEmailSentPageButton.click();
+        sentPage.gotToDeletedPage();
+
+        trashPage = PageFactory.initElements(driver, TrashPage.class);
+        trashPage.selectFirstTwoElements();
+        trashPage.deleteCheckedEmailsTrashPageButton.click();
+    }
+
+    /*@Test
     public void testDeleting(){
 
         //страница входа
@@ -50,6 +93,7 @@ public class MainPageTest {
 
         //Страница Логина, логинимся
         loginPage = new LoginPage(driver);
+        loginPage.waitAndType(loginPage);
         loginPage.writeLoginInput("locatortest");
         loginPage.waitPresentAndClick(loginPage.getSubmitButton());
         loginPage.writePasswordInput("testlocator");
@@ -89,9 +133,9 @@ public class MainPageTest {
         trashPage = new TrashPage(driver);
         trashPage.selectFirstTwoElements();
         trashPage.waitClickableAndClick(trashPage.getDeleteCheckedEmailsTrashPageButton());
-    }
-    @After
-    public void tearDown(){
-        driver.quit();
-    }
+    }*/
+//    @After
+//    public void tearDown(){
+//        driver.quit();
+//    }
 }
