@@ -1,23 +1,27 @@
 import lombok.Getter;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 @Getter
-public class InboxPage extends WaitClass{
+public class InboxPage extends WaitClass {
 
     public InboxPage(WebDriver driver) {
         this.driver = driver;
     }
+    public static InboxPage init(WebDriver driver){
+        new InboxPage(driver);
+        return PageFactory.initElements(driver, InboxPage.class);
+    }
     @FindBy(xpath = "//span[@class='_nb-checkbox-flag _nb-checkbox-normal-flag']")
-    WebElement checkBoxIncomePageButton;
+    private WebElement checkBoxIncomePageButton;
 
     @FindBy(xpath = "//div[contains(@class, 'delete')]")
-    WebElement deleteEmailIncomePageButton;
+    private WebElement deleteEmailIncomePageButton;
 
     @FindBy(xpath = "//a[@href='#sent']")
-    WebElement sentPageButton;
+    private WebElement sentPageButton;
 
     public void goToSentPage(){
         this.waitForAjaxToFinish();

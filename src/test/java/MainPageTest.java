@@ -1,22 +1,26 @@
+import com.anarsoft.vmlens.concurrent.junit.ConcurrentTestRunner;
 import com.gargoylesoftware.htmlunit.Page;
+import datasource.MessageClass;
+import datasource.UserClass;
 import org.junit.*;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import javax.jws.soap.SOAPBinding;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
+@RunWith(ConcurrentTestRunner.class)
 public class MainPageTest {
-    private WebDriver driver;
-    private LoginPage loginPage;
-    private MailPage mailPage;
-    private FirstPage firstPage;
-    private InboxPage inboxPage;
-    private SentPage sentPage;
-    private TrashPage trashPage;
+
 
     @Before
-    public void setUp(){
+    public void setUp() throws MalformedURLException {
 
 /*        ChromeOptions options = new ChromeOptions();
         Map<String, Object> prefs = new HashMap<String, Object>();
@@ -34,27 +38,54 @@ public class MainPageTest {
         System.setProperty("webdriver.chrome.driver", "D:\\TMP\\tests\\drivers\\chromedriver.exe");
         driver = new ChromeDriver(cap);*/
 
-        System.setProperty("webdriver.chrome.driver", "D:\\TMP\\tests\\drivers\\chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-        driver.manage().deleteAllCookies();
-        driver.get("https://mail.yandex.ru/?noretpath=1");
-        //loginPage = new LoginPage(driver);
+/*        System.setProperty("webdriver.chrome.driver", "D:\\TMP\\tests\\drivers\\chromedriver.exe");
+        UserBehavior.driver = new ChromeDriver();
+        //UserBehavior.driver.manage().window().maximize();
+        UserBehavior.driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+        UserBehavior.driver.manage().deleteAllCookies();
+        UserBehavior.driver.get("https://mail.yandex.ru/?noretpath=1");*/
+
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setBrowserName("chrome");
+        capabilities.setVersion("83.0");
+        capabilities.setCapability("enableVNC", true);
+        capabilities.setCapability("enableVideo", false);
+
+        RemoteWebDriver driverR = new RemoteWebDriver(
+                URI.create("http://localhost:4444/wd/hub").toURL(),
+                capabilities
+        );
+        UserBehavior.driver = driverR;
+        UserBehavior.driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+        UserBehavior.driver.manage().deleteAllCookies();
+        UserBehavior.driver.get("https://mail.yandex.ru/?noretpath=1");
+    }
+    @Test
+    public void test3(){
+        UserClass userOne = new UserClass();
+        UserBehavior.userLogin(userOne);
+
+        MessageClass messFromOne = new MessageClass();
+        UserBehavior.createNewEmail(messFromOne);
+        UserBehavior.checkReceivedEmails(messFromOne);
+
+        UserBehavior.deleteReceivedEmails();
     }
 
+
+/*  noUserBehaviorClass
     @Test
     public void testPageFactory(){
-        firstPage = PageFactory.initElements(driver, FirstPage.class);
+        firstPage = FirstPage.init(driver);
         firstPage.waitAndClick();
 
-        loginPage = PageFactory.initElements(driver, LoginPage.class);
+        loginPage = LoginPage.init(driver);
         loginPage.waitAndTypeLogin("locatortest@yandex.by");
         loginPage.clickSubmitAndWait();
         loginPage.waitAndTypePassword("testlocator");
         loginPage.clickSubmitAndWait();
 
-        mailPage = PageFactory.initElements(driver, MailPage.class);
+        mailPage = MailPage.init(driver);
         mailPage.clickWriteNewEmailButtonAndWait();
         mailPage.prepareNewEmail("locatortest@yandex.by", "topic", "sometext");
         mailPage.clickSendNewEmailAndWait();
@@ -69,20 +100,20 @@ public class MainPageTest {
         //идем во воходящие
         mailPage.goToSentMailAndWait();
 
-        inboxPage = PageFactory.initElements(driver, InboxPage.class);
+        inboxPage = InboxPage.init(driver);
         inboxPage.checkBoxIncomePageButton.click();
         inboxPage.deleteEmailIncomePageButton.click();
         inboxPage.goToSentPage();
 
-        sentPage = PageFactory.initElements(driver, SentPage.class);
+        sentPage = SentPage.init(driver);
         sentPage.checkBoxSentPageButton.click();
         sentPage.deleteEmailSentPageButton.click();
         sentPage.gotToDeletedPage();
 
-        trashPage = PageFactory.initElements(driver, TrashPage.class);
+        trashPage = TrashPage.init(driver);
         trashPage.selectFirstTwoElements();
         trashPage.deleteCheckedEmailsTrashPageButton.click();
-    }
+    }*/
 
     /*@Test
     public void testDeleting(){

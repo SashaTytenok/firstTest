@@ -1,62 +1,69 @@
+import datasource.MessageClass;
 import lombok.Getter;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 @Getter
-public class MailPage extends WaitClass{
+public class MailPage extends WaitClass {
 
     public MailPage(WebDriver driver) {
         this.driver = driver;
     }
+    public static MailPage init(WebDriver driver){
+        new MailPage(driver);
+        return PageFactory.initElements(driver, MailPage.class);
+    }
     @FindBy(xpath = "//a[contains(@class, 'mail-ComposeButton')]")
-    WebElement writeEmailButton;
+    private WebElement writeEmailButton;
 
     @FindBy(xpath = "//span[text()='Кому']/parent::label/parent::div//div[@class='composeYabbles']")
-    WebElement addresseeInput;
+    private WebElement addresseeInput;
 
     @FindBy(xpath = "//input[@name='subject']")
-    WebElement topicInput;
+    private WebElement topicInput;
 
     @FindBy(xpath = "//div[@role='textbox']")
-    WebElement messageInput;
+    private WebElement messageInput;
 
     @FindBy(xpath = "//div[@class='ComposeSendButton-Text']/../..")
-    WebElement sendEmailButton;
+    private WebElement sendEmailButton;
 
     @FindBy(xpath = "//a[@data-lego and @href='#inbox']")
-    WebElement popupButton;
+    private WebElement popupButton;
 
     @FindBy(xpath = "//span[@data-click-action]")
-    WebElement checkNewEmailButton;
+    private WebElement checkNewEmailButton;
 
     @FindBy(xpath = "//input[@class='textinput__control']")
-    WebElement searchInput;
+    private WebElement searchInput;
 
     @FindBy(xpath = "//form/button")
-    WebElement findButton;
+    private WebElement findButton;
 
     @FindBy(xpath = "//span[@title='topic' and text()='topic']")
-    WebElement topicSpan;
+    private WebElement topicSpan;
 
     @FindBy(xpath = "//a[contains(@href,'message')]")
-    WebElement listOfEmails;
+    private WebElement listOfEmails;
 
     @FindBy(xpath = "//div[text()='sometext']")
-    WebElement textOfEmail;
+    private WebElement textOfEmail;
 
     @FindBy(xpath = "//a[@href='#inbox']")
-    WebElement incomeMailsPageButton;
+    private WebElement incomeMailsPageButton;
 
+    public void prepareNewEmail(MessageClass message){
+        addresseeInput.sendKeys(message.getAddressee());
+        topicInput.sendKeys(message.getTopicOfMessage());
+        messageInput.sendKeys(message.getMessage());
+    }
+    /*
+    //noUserBehaviorClass
     public void clickWriteNewEmailButtonAndWait(){
         writeEmailButton.click();
         this.waitForAjaxToFinish();
-    }
-    public void prepareNewEmail(String addressee, String topic, String message){
-        addresseeInput.sendKeys(addressee);
-        topicInput.sendKeys(topic);
-        messageInput.sendKeys(message);
     }
     public void clickSendNewEmailAndWait(){
         sendEmailButton.click();
@@ -79,7 +86,7 @@ public class MailPage extends WaitClass{
     public void goToSentMailAndWait(){
         incomeMailsPageButton.click();
         this.waitForAjaxToFinish();
-    }
+    }*/
 
 /*
     noPageFactory
