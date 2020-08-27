@@ -1,14 +1,12 @@
-import org.junit.Test;
-import org.junit.experimental.ParallelComputer;
-import org.junit.runner.JUnitCore;
- 
+import org.testng.annotations.Test;
+
 public class TestClassParallel {
  
     @Test
     public void test() {
         Class[] cls = { MainPageTest.class, MainPageTest1.class };
         // Parallel among classes
-        JUnitCore.runClasses(ParallelComputer.classes(), cls);
+        //JUnitCore.runClasses(ParallelComputer.classes(), cls);
  
 /*        System.out.println("----------------------------");
         // Parallel among methods in a class

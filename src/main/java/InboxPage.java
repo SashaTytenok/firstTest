@@ -5,9 +5,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 @Getter
-public class InboxPage extends WaitClass {
+public class InboxPage{
 
-    public static InboxPage init(WebDriver driver){
+    public InboxPage init(WebDriver driver){
         return PageFactory.initElements(driver, InboxPage.class);
     }
     @FindBy(xpath = "//span[@class='_nb-checkbox-flag _nb-checkbox-normal-flag']")
@@ -18,9 +18,4 @@ public class InboxPage extends WaitClass {
 
     @FindBy(xpath = "//a[@href='#sent']")
     private WebElement sentPageButton;
-
-    public void goToSentPage(){
-        this.waitForAjaxToFinish();
-        sentPageButton.click();
-    }
 }

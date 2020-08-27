@@ -1,25 +1,26 @@
-import com.anarsoft.vmlens.concurrent.junit.ConcurrentTestRunner;
 import datasource.MessageClass;
 import datasource.UserClass;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import services.MultitonType;
-import java.util.concurrent.TimeUnit;
+import org.testng.annotations.*;
 
-@RunWith(ConcurrentTestRunner.class)
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+
+//@RunWith(ConcurrentTestRunner.class)
 public class MainPageTest1 {
-    @Before
+    //private static final Logger logger =  Logger.getLogger(String.valueOf(MainPageTest.class));
+    UserBehavior userBehavior;
+
+    @BeforeMethod
     public void setUp(){
-        UserBehavior.tmp=MultitonType.ONE;
+        userBehavior = new UserBehavior((short) Thread.currentThread().getId());
         System.setProperty("webdriver.chrome.driver", "D:\\TMP\\tests\\drivers\\chromedriver.exe");
-        UserBehavior.driver = DriverManage.getInstance(UserBehavior.tmp);
-        UserBehavior.driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-        UserBehavior.driver.manage().deleteAllCookies();
-        UserBehavior.driver.get("https://mail.yandex.ru/?noretpath=1");
+
+        userBehavior.driver = DriverManage.getInstance(userBehavior.threadId);
+
+        userBehavior.driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+        userBehavior.driver.manage().deleteAllCookies();
+        userBehavior.driver.get("https://mail.yandex.ru/?noretpath=1");
+        //logger.info(String.valueOf(Thread.currentThread().getId()));
         //UserBehavior.driver = new ChromeDriver();
         //UserBehavior.driver.manage().window().maximize();
 
@@ -40,15 +41,26 @@ public class MainPageTest1 {
         UserBehavior.driver.get("https://mail.yandex.ru/?noretpath=1");*/
     }
     @Test
-    public void test3(){
+    public void test1(){
         UserClass userOne = new UserClass();
-        UserBehavior.userLogin(userOne);
+        userBehavior.userLogin(userOne);
 
         MessageClass messFromOne = new MessageClass();
-        UserBehavior.createNewEmail(messFromOne);
-        UserBehavior.checkReceivedEmails(messFromOne);
+        userBehavior.createNewEmail(messFromOne);
+        userBehavior.checkReceivedEmails(messFromOne);
 
-        UserBehavior.deleteReceivedEmails();
+        userBehavior.deleteReceivedEmails();
+    }
+    @Test
+    public void test(){
+        UserClass userOne = new UserClass();
+        userBehavior.userLogin(userOne);
+
+        MessageClass messFromOne = new MessageClass();
+        userBehavior.createNewEmail(messFromOne);
+        userBehavior.checkReceivedEmails(messFromOne);
+
+        userBehavior.deleteReceivedEmails();
     }
 //    @After
 //    public void tearDown(){

@@ -4,9 +4,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 @Getter
-public class LoginPage extends WaitClass {
-
-    public static LoginPage init(WebDriver driver){
+public class LoginPage{
+    public LoginPage init(WebDriver driver){
         return PageFactory.initElements(driver, LoginPage.class);
     }
 

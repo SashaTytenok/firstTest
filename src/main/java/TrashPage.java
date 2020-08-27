@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class TrashPage extends WaitClass {
+public class TrashPage{
 
-    public static TrashPage init(WebDriver driver){
+    public TrashPage init(WebDriver driver){
         return PageFactory.initElements(driver, TrashPage.class);
     }
     private ArrayList<WebElement> lst = new ArrayList<>();
@@ -22,6 +22,5 @@ public class TrashPage extends WaitClass {
     public void selectFirstTwoElements() {
         listOfEmailsToBeDeleted.get(0).click();
         listOfEmailsToBeDeleted.get(1).click();
-        this.waitForAjaxToFinish();
     }
 }

@@ -5,12 +5,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 @Getter
-public class FirstPage extends WaitClass{
-    public static FirstPage init(WebDriver driver){
-        //new FirstPage(driver);
+public class FirstPage{
+    public FirstPage init(WebDriver driver){
         return PageFactory.initElements(driver, FirstPage.class);
     }
 
     @FindBy(xpath =  "//div[@class = 'HeadBanner-ButtonsWrapper']/a[2]")
-    WebElement signInButton;
+    private WebElement signInButton;
 }

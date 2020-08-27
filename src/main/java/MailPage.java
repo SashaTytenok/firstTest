@@ -6,9 +6,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 @Getter
-public class MailPage extends WaitClass {
+public class MailPage {
 
-    public static MailPage init(WebDriver driver){
+    public MailPage init(WebDriver driver){
         return PageFactory.initElements(driver, MailPage.class);
     }
     @FindBy(xpath = "//a[contains(@class, 'mail-ComposeButton')]")

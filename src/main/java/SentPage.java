@@ -5,9 +5,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 @Getter
-public class SentPage extends WaitClass {
+public class SentPage{
 
-    public static SentPage init(WebDriver driver){
+    public SentPage init(WebDriver driver){
         return PageFactory.initElements(driver, SentPage.class);
     }
     @FindBy(xpath = "//span[@class='_nb-checkbox-flag _nb-checkbox-normal-flag']")
@@ -18,9 +18,4 @@ public class SentPage extends WaitClass {
 
     @FindBy(xpath = "//a[@href='#trash']")
     private WebElement deletedPageButton;
-
-    public void gotToDeletedPage(){
-        deletedPageButton.click();
-        this.waitForAjaxToFinish();
-    }
 }
