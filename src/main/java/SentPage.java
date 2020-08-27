@@ -7,11 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 @Getter
 public class SentPage extends WaitClass {
 
-    public SentPage(WebDriver driver) {
-        this.driver = driver;
-    }
     public static SentPage init(WebDriver driver){
-        new SentPage(driver);
         return PageFactory.initElements(driver, SentPage.class);
     }
     @FindBy(xpath = "//span[@class='_nb-checkbox-flag _nb-checkbox-normal-flag']")
@@ -27,10 +23,4 @@ public class SentPage extends WaitClass {
         deletedPageButton.click();
         this.waitForAjaxToFinish();
     }
-/*
-    noPageFactory
-    private By checkBoxSentPageButton = By.xpath("//span[@class='_nb-checkbox-flag _nb-checkbox-normal-flag']");
-    private By deleteEmailSentPageButton = By.xpath("//div[contains(@class, 'delete')]");
-    private By deletedPageButton = By.xpath("//a[@href='#trash']");
-    */
 }
