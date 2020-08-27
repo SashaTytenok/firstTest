@@ -7,7 +7,8 @@ import org.openqa.selenium.support.PageFactory;
 @Getter
 public class InboxPage extends WaitClass {
 
-    public InboxPage(WebDriver driver) {
+    public InboxPage(WebDriver driver)
+    {
         this.driver = driver;
     }
     public static InboxPage init(WebDriver driver){

@@ -11,10 +11,10 @@ import services.MultitonType;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(ConcurrentTestRunner.class)
-public class MainPageTest {
+public class MainPageTest1 {
     @Before
     public void setUp(){
-        UserBehavior.tmp=MultitonType.TWO;
+        UserBehavior.tmp=MultitonType.ONE;
         System.setProperty("webdriver.chrome.driver", "D:\\TMP\\tests\\drivers\\chromedriver.exe");
         UserBehavior.driver = DriverManage.getInstance(UserBehavior.tmp);
         UserBehavior.driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
