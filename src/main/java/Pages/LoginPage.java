@@ -1,13 +1,12 @@
+package Pages;
+
 import lombok.Getter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 @Getter
-public class LoginPage{
-    public LoginPage init(WebDriver driver){
-        return PageFactory.initElements(driver, LoginPage.class);
-    }
+public class LoginPage extends BasePage{
 
     @FindBy(xpath = "//input[@id='passp-field-login']")
     private WebElement loginInput;

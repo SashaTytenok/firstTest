@@ -1,3 +1,5 @@
+package Pages;
+
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,11 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class TrashPage{
+public class TrashPage extends MailPage{
 
-    public TrashPage init(WebDriver driver){
-        return PageFactory.initElements(driver, TrashPage.class);
-    }
     private ArrayList<WebElement> lst = new ArrayList<>();
     @FindBy(xpath = "//label[@class]/span[contains(@class, 'flag')]")
     private List<WebElement> listOfEmailsToBeDeleted;

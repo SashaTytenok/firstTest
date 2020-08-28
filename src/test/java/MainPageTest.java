@@ -1,71 +1,66 @@
 import datasource.MessageClass;
 import datasource.UserClass;
 import org.testng.annotations.*;
+import services.MyWebDriver;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-//@RunWith(ConcurrentTestRunner.class)
 public class MainPageTest {
     private static final Logger logger =  Logger.getLogger(String.valueOf(MainPageTest.class));
-    UserBehavior userBehavior;
-    UserBehavior userBehavior1;
+    UserBehavior userBehavior = new UserBehavior();
+    MessageClass messFromTwo;
+    MessageClass messFromOne;
+    UserClass userOne;
+    UserClass userTwo;
+
+    @BeforeTest
+    public void setUpTest(){
+        messFromOne = new MessageClass("topicFrom0","locatortest1@yandex.ru",  "sometext");
+        messFromTwo = new MessageClass("topicFrom1","locatortest@yandex.by",  "sometext1");
+        userOne = new UserClass();
+        userTwo = new UserClass("locatortest1@yandex.ru", "testlocator");
+    }
 
     @BeforeMethod
     public void setUp(){
-        UserBehavior tmp;
-        tmp = new UserBehavior((short) Thread.currentThread().getId());
+        System.out.println(Thread.currentThread().getId());
         System.setProperty("webdriver.chrome.driver", "D:\\TMP\\tests\\drivers\\chromedriver.exe");
 
-        tmp.driver = DriverManage.getInstance(tmp.threadId);
-
-        tmp.driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-        tmp.driver.manage().deleteAllCookies();
-        tmp.driver.get("https://mail.yandex.ru/?noretpath=1");
-         if (userBehavior==null)
-             userBehavior=tmp;
-         else userBehavior1=tmp;
-
-        //UserBehavior.driver = new ChromeDriver();
+        MyWebDriver.getInstance().manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+        MyWebDriver.getInstance().manage().deleteAllCookies();
+        MyWebDriver.getInstance().get("https://mail.yandex.ru/?noretpath=1");
         //UserBehavior.driver.manage().window().maximize();
 
 
-/*        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-        capabilities.setBrowserName("chrome");
-        capabilities.setVersion("83.0");
-        capabilities.setCapability("enableVNC", true);
-        capabilities.setCapability("enableVideo", false);
-
-        RemoteWebDriver driverR = new RemoteWebDriver(
-                URI.create("http://localhost:4444/wd/hub").toURL(),
-                capabilities
-        );
-        UserBehavior.driver = driverR;
-        UserBehavior.driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-        UserBehavior.driver.manage().deleteAllCookies();
-        UserBehavior.driver.get("https://mail.yandex.ru/?noretpath=1");*/
+//        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+//        capabilities.setBrowserName("chrome");
+//        capabilities.setVersion("83.0");
+//        capabilities.setCapability("enableVNC", true);
+//        capabilities.setCapability("enableVideo", false);
+//
+//        RemoteWebDriver driverR = new RemoteWebDriver(
+//                URI.create("http://localhost:4444/wd/hub").toURL(),
+//                capabilities
+//        );
+//        UserBehavior.driver = driverR;
+//        UserBehavior.driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+//        UserBehavior.driver.manage().deleteAllCookies();
+//        UserBehavior.driver.get("https://mail.yandex.ru/?noretpath=1");
     }
     @Test
     public void test1(){
-        UserClass userOne = new UserClass();
         userBehavior.userLogin(userOne);
-
-        MessageClass messFromOne = new MessageClass("topicFrom0","locatortest1@yandex.by",  "sometext");
-        userBehavior.createNewEmail(messFromOne);
-        userBehavior.checkReceivedEmails(messFromOne);
-
-        userBehavior.deleteReceivedEmails();
+//        userBehavior.createNewEmail(messFromOne);
+//        userBehavior.checkReceivedEmails(messFromTwo);
+//        userBehavior.deleteReceivedEmails();
     }
     @Test
     public void test(){
-        UserClass userOne1 = new UserClass("locatortest1@yandex.by", "testlocator");
-        userBehavior1.userLogin(userOne1);
-
-        MessageClass messFromOne = new MessageClass("topicFrom1", "locatortest@yandex.by", "sometext");
-        userBehavior1.createNewEmail(messFromOne);
-        userBehavior1.checkReceivedEmails(messFromOne);
-
-        userBehavior1.deleteReceivedEmails();
+        userBehavior.userLogin(userTwo);
+//        userBehavior.createNewEmail(messFromTwo);
+//        userBehavior.checkReceivedEmails(messFromOne);
+//        userBehavior.deleteReceivedEmails();
     }
 //    @After
 //    public void tearDown(){

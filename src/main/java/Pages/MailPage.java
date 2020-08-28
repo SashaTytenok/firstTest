@@ -1,3 +1,5 @@
+package Pages;
+
 import datasource.MessageClass;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
@@ -6,11 +8,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 @Getter
-public class MailPage {
+public class MailPage extends BasePage{
 
-    public MailPage init(WebDriver driver){
-        return PageFactory.initElements(driver, MailPage.class);
-    }
     @FindBy(xpath = "//a[contains(@class, 'mail-ComposeButton')]")
     private WebElement writeEmailButton;
 
@@ -49,6 +48,12 @@ public class MailPage {
 
     @FindBy(xpath = "//a[@href='#inbox']")
     private WebElement incomeMailsPageButton;
+
+    @FindBy(xpath = "//a/div[contains(@class, 'user-pic')]")
+    private WebElement userPicture;
+
+    @FindBy(xpath = "//div[@class='legouser__menu-header']//span[@class='user-account__subname']")
+    private WebElement checkSpanUser;
 
     public void prepareNewEmail(MessageClass message){
         addresseeInput.sendKeys(message.getAddressee());

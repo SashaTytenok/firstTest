@@ -1,72 +1,91 @@
+import Pages.*;
 import datasource.MessageClass;
 import datasource.UserClass;
-import org.apache.http.util.Asserts;
+import org.testng.Assert;
+import services.MyWebDriver;
+import services.PageManager;
+import services.WaitClass;
 
-public class UserBehavior extends WaitClass{
+public class UserBehavior {
 
-    private LoginPage loginPage;
-    private MailPage mailPage;
-    private FirstPage firstPage;
-    private InboxPage inboxPage;
-    private SentPage sentPage;
-    private TrashPage trashPage;
+    public void userLogin(UserClass user) {
+        FirstPage firstPage = PageManager.getPage(MyWebDriver.getInstance(), FirstPage.class);
 
-    public UserBehavior(Short threadId) {
-        super(threadId);
-    }
-
-    public void userLogin(UserClass user){
-        firstPage = new FirstPage().init(DriverManage.getInstance(threadId));
         firstPage.getSignInButton().click();
-        loginPage = new LoginPage().init(DriverManage.getInstance(threadId));
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
+
+        LoginPage loginPage = PageManager.getPage(MyWebDriver.getInstance(), LoginPage.class);
+
         loginPage.getLoginInput().sendKeys(user.getUserLogin());
         loginPage.getSubmitButton().click();
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
         loginPage.getPasswordInput().sendKeys(user.getUserPassword());
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
         loginPage.getSubmitButton().click();
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
+        MailPage mailPage = PageManager.getPage(MyWebDriver.getInstance(), MailPage.class);
+        mailPage.getUserPicture().click();
+        //проверка того, что я попал на нужную страницу
+        Assert.assertEquals(mailPage.getCheckSpanUser().getText(), user.getUserLogin());
     }
+
     public void createNewEmail(MessageClass message){
-        mailPage = new MailPage().init(DriverManage.getInstance(threadId));
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        MailPage mailPage = PageManager.getPage(MyWebDriver.getInstance(),MailPage.class);
+
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
         mailPage.getWriteEmailButton().click();
         mailPage.prepareNewEmail(message);
         mailPage.getSendEmailButton().click();
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
         mailPage.getPopupButton().click();
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
     }
+    /*
+    public void createNewEmail(long threadId, MessageClass message){
+        MailPage mailPage = PageManager.getPage(DriverManage.getInstance(threadId),MailPage.class);
+
+        WaitClass.waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        mailPage.getWriteEmailButton().click();
+        mailPage.prepareNewEmail(message);
+        mailPage.getSendEmailButton().click();
+        WaitClass.waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        mailPage.getPopupButton().click();
+        WaitClass.waitForAjaxToFinish(DriverManage.getInstance(threadId));
+    }*/
+
     public void checkReceivedEmails(MessageClass message){
+        MailPage mailPage = PageManager.getPage(MyWebDriver.getInstance(), MailPage.class);
+
         mailPage.getCheckNewEmailButton().click();
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
         mailPage.getSearchInput().sendKeys(message.getTopicOfMessage());
         mailPage.getFindButton().click();
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
 
-        //Assert.assertTrue(mailPage.getTopicSpan().isDisplayed());
+        Assert.assertTrue(mailPage.getTopicSpan().isDisplayed());
         //из списка получаем наше письмо чтобы сравнить текст сообщения
         mailPage.getListOfEmails().click();
-        //Assert.assertEquals(message.getMessage(), mailPage.getTextOfEmail().getText());
+        Assert.assertEquals(message.getMessage(), mailPage.getTextOfEmail().getText());
     }
-    public void deleteReceivedEmails(){
-        mailPage.getIncomeMailsPageButton().click();
-        inboxPage = new InboxPage().init(DriverManage.getInstance(threadId));
 
+    public void deleteReceivedEmails(){
+        InboxPage inboxPage = PageManager.getPage(MyWebDriver.getInstance(),InboxPage.class);
+        inboxPage.getIncomeMailsPageButton().click();
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
         inboxPage.getCheckBoxIncomePageButton().click();
         inboxPage.getDeleteEmailIncomePageButton().click();
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
         inboxPage.getSentPageButton().click();
 
-        sentPage = new SentPage().init(DriverManage.getInstance(threadId));
+        SentPage sentPage =PageManager.getPage(MyWebDriver.getInstance(), SentPage.class);
         sentPage.getCheckBoxSentPageButton().click();
         sentPage.getDeleteEmailSentPageButton().click();
         sentPage.getDeletedPageButton().click();
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
 
-        trashPage = new TrashPage().init(DriverManage.getInstance(threadId));
+        TrashPage trashPage = PageManager.getPage(MyWebDriver.getInstance(), TrashPage.class);
         trashPage.selectFirstTwoElements();
-        waitForAjaxToFinish(DriverManage.getInstance(threadId));
+        WaitClass.waitForAjaxToFinish(MyWebDriver.getInstance());
         trashPage.getDeleteCheckedEmailsTrashPageButton().click();
     }
 }
