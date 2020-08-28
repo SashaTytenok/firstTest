@@ -1,5 +1,6 @@
 import datasource.MessageClass;
 import datasource.UserClass;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -7,11 +8,23 @@ import java.util.logging.Logger;
 
 //@RunWith(ConcurrentTestRunner.class)
 public class MainPageTest1 {
-    //private static final Logger logger =  Logger.getLogger(String.valueOf(MainPageTest.class));
+    LoginPage loginPage;
+    MailPage mailPage;
+    FirstPage firstPage;
+    InboxPage inboxPage;
+    SentPage sentPage;
+    TrashPage trashPage;
     UserBehavior userBehavior;
 
     @BeforeMethod
     public void setUp(){
+        short tmp =(short) Thread.currentThread().getId();
+        loginPage = new LoginPage().init(DriverManage.getInstance(tmp));
+        mailPage = new MailPage().init(DriverManage.getInstance(tmp));
+        firstPage = new FirstPage().init(DriverManage.getInstance(tmp));
+        inboxPage = new InboxPage().init(DriverManage.getInstance(tmp));
+        sentPage = new SentPage().init(DriverManage.getInstance(tmp));
+        trashPage = new TrashPage().init(DriverManage.getInstance(tmp));
         userBehavior = new UserBehavior((short) Thread.currentThread().getId());
         System.setProperty("webdriver.chrome.driver", "D:\\TMP\\tests\\drivers\\chromedriver.exe");
 

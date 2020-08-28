@@ -9,22 +9,22 @@ import java.util.logging.Logger;
 public class MainPageTest {
     private static final Logger logger =  Logger.getLogger(String.valueOf(MainPageTest.class));
     UserBehavior userBehavior;
-    //UserBehavior userBehavior1;
+    UserBehavior userBehavior1;
 
     @BeforeMethod
     public void setUp(){
-        //UserBehavior tmp;
-        userBehavior = new UserBehavior((short) Thread.currentThread().getId());
+        UserBehavior tmp;
+        tmp = new UserBehavior((short) Thread.currentThread().getId());
         System.setProperty("webdriver.chrome.driver", "D:\\TMP\\tests\\drivers\\chromedriver.exe");
 
-        userBehavior.driver = DriverManage.getInstance(userBehavior.threadId);
+        tmp.driver = DriverManage.getInstance(tmp.threadId);
 
-        userBehavior.driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-        userBehavior.driver.manage().deleteAllCookies();
-        userBehavior.driver.get("https://mail.yandex.ru/?noretpath=1");
-//         if (userBehavior==null)
-//             userBehavior=tmp;
-//         else userBehavior1=tmp;
+        tmp.driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+        tmp.driver.manage().deleteAllCookies();
+        tmp.driver.get("https://mail.yandex.ru/?noretpath=1");
+         if (userBehavior==null)
+             userBehavior=tmp;
+         else userBehavior1=tmp;
 
         //UserBehavior.driver = new ChromeDriver();
         //UserBehavior.driver.manage().window().maximize();
@@ -50,7 +50,7 @@ public class MainPageTest {
         UserClass userOne = new UserClass();
         userBehavior.userLogin(userOne);
 
-        MessageClass messFromOne = new MessageClass();
+        MessageClass messFromOne = new MessageClass("topicFrom0","locatortest1@yandex.by",  "sometext");
         userBehavior.createNewEmail(messFromOne);
         userBehavior.checkReceivedEmails(messFromOne);
 
@@ -58,14 +58,14 @@ public class MainPageTest {
     }
     @Test
     public void test(){
-        UserClass userOne = new UserClass();
-        userBehavior.userLogin(userOne);
+        UserClass userOne1 = new UserClass("locatortest1@yandex.by", "testlocator");
+        userBehavior1.userLogin(userOne1);
 
-        MessageClass messFromOne = new MessageClass();
-        userBehavior.createNewEmail(messFromOne);
-        userBehavior.checkReceivedEmails(messFromOne);
+        MessageClass messFromOne = new MessageClass("topicFrom1", "locatortest@yandex.by", "sometext");
+        userBehavior1.createNewEmail(messFromOne);
+        userBehavior1.checkReceivedEmails(messFromOne);
 
-        userBehavior.deleteReceivedEmails();
+        userBehavior1.deleteReceivedEmails();
     }
 //    @After
 //    public void tearDown(){

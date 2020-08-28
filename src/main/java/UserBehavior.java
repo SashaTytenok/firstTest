@@ -1,5 +1,6 @@
 import datasource.MessageClass;
 import datasource.UserClass;
+import org.apache.http.util.Asserts;
 
 public class UserBehavior extends WaitClass{
 
@@ -42,7 +43,6 @@ public class UserBehavior extends WaitClass{
         mailPage.getSearchInput().sendKeys(message.getTopicOfMessage());
         mailPage.getFindButton().click();
         waitForAjaxToFinish(DriverManage.getInstance(threadId));
-
 
         //Assert.assertTrue(mailPage.getTopicSpan().isDisplayed());
         //из списка получаем наше письмо чтобы сравнить текст сообщения
