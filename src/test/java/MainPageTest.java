@@ -1,8 +1,12 @@
 import datasource.MessageClass;
 import datasource.UserClass;
 import org.testng.annotations.*;
+import services.FileManager;
 import services.MyWebDriver;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -27,7 +31,7 @@ public class MainPageTest {
         System.out.println(Thread.currentThread().getId());
         System.setProperty("webdriver.chrome.driver", "D:\\TMP\\tests\\drivers\\chromedriver.exe");
 
-        MyWebDriver.getInstance().manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+        MyWebDriver.getInstance().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         MyWebDriver.getInstance().manage().deleteAllCookies();
         MyWebDriver.getInstance().get("https://mail.yandex.ru/?noretpath=1");
         //UserBehavior.driver.manage().window().maximize();
@@ -49,19 +53,30 @@ public class MainPageTest {
 //        UserBehavior.driver.get("https://mail.yandex.ru/?noretpath=1");
     }
     @Test
-    public void test1(){
+    public void testUploadFile() throws IOException {
+        ArrayList<File> files;
+//        files.add(new File("D:\\TMP\\files", "igsel.txt"));
+//        files.add(new File("D:\\TMP\\files", "xdiif.txt"));
+//        files.add(new File("D:\\TMP\\files", "zpulr.txt"));
         userBehavior.userLogin(userOne);
+        userBehavior.goToStoragePage();
+        files = userBehavior.prepareAndSendFiles();
+        userBehavior.selectAndDelete(files);
+    }
+//    @Test
+//    public void test1(){
+//        userBehavior.userLogin(userOne);
 //        userBehavior.createNewEmail(messFromOne);
 //        userBehavior.checkReceivedEmails(messFromTwo);
 //        userBehavior.deleteReceivedEmails();
-    }
-    @Test
+//    }
+/*    @Test
     public void test(){
         userBehavior.userLogin(userTwo);
-//        userBehavior.createNewEmail(messFromTwo);
-//        userBehavior.checkReceivedEmails(messFromOne);
-//        userBehavior.deleteReceivedEmails();
-    }
+        userBehavior.createNewEmail(messFromTwo);
+        userBehavior.checkReceivedEmails(messFromOne);
+        userBehavior.deleteReceivedEmails();
+    }*/
 //    @After
 //    public void tearDown(){
 //        UserBehavior.driver.quit();

@@ -55,6 +55,15 @@ public class MailPage extends BasePage{
     @FindBy(xpath = "//div[@class='legouser__menu-header']//span[@class='user-account__subname']")
     private WebElement checkSpanUser;
 
+    @FindBy(xpath = "//div[@class='mail-HeaderServicesPopup__container']//a[@href='https://disk.yandex.ru/?source=tab-mail']")
+    private WebElement storagePageButton;
+
+    @FindBy(xpath = "//a[@data-tab-id='all']")
+    private WebElement showAllServices;
+
+    @FindBy(xpath = "//div[contains(@class, 'light-popup')]")
+    private WebElement lightPopUpContainer;
+
     public void prepareNewEmail(MessageClass message){
         addresseeInput.sendKeys(message.getAddressee());
         topicInput.sendKeys(message.getTopicOfMessage());

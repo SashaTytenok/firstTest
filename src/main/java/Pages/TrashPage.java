@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 public class TrashPage extends MailPage{
 
-    private ArrayList<WebElement> lst = new ArrayList<>();
+    //private ArrayList<WebElement> lst = new ArrayList<>();
     @FindBy(xpath = "//label[@class]/span[contains(@class, 'flag')]")
     private List<WebElement> listOfEmailsToBeDeleted;
 
